@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "flyonui" {
+  themes: light;
+}
+@import "flyonui/variants.css";
+@source "../../node_modules/flyonui/flyonui.js";
+
+/* Estilos de Ionic (mantener compatibilidad) */
+@import "../theme/variables.css";
+
