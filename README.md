@@ -105,6 +105,64 @@ Una vez abierto en Android Studio:
 - Conecta un dispositivo físico con USB y habilita depuración USB
 - Haz clic en el botón "Run" en Android Studio
 
+## Compilar APK (Sin Firma)
+
+Para generar el archivo APK de la aplicación **sin firma** (no firmado), tienes dos opciones:
+
+### Método 1: Usando Android Studio (Recomendado)
+
+1. **Compila el proyecto web**:
+   ```bash
+   npm run build
+   ```
+
+2. **Sincroniza con Capacitor**:
+   ```bash
+   npx cap sync android
+   ```
+
+3. **Abre el proyecto en Android Studio**:
+   ```bash
+   npx cap open android
+   ```
+
+4. **En Android Studio**:
+   - Ve a `Build` → `Build Bundle(s) / APK(s)` → `Build APK(s)`
+   - Selecciona la variante `debug` (no requiere firma)
+   - El APK se generará en: `android/app/build/outputs/apk/debug/app-debug.apk`
+
+### Método 2: Usando Línea de Comandos (Gradle) - Más Rápido
+
+1. **Compila y sincroniza** (todo en uno):
+   ```bash
+   npm run build:android
+   ```
+
+2. **Navega a la carpeta Android y compila el APK de debug** (sin firma):
+   ```bash
+   cd android
+   .\gradlew assembleDebug
+   ```
+
+3. **El APK estará en**:
+   ```
+   android/app/build/outputs/apk/debug/app-debug.apk
+   ```
+
+### Método 3: Todo en un solo comando (Windows PowerShell)
+
+```powershell
+npm run build; npx cap sync android; cd android; .\gradlew assembleDebug
+```
+
+Luego el APK estará en: `android/app/build/outputs/apk/debug/app-debug.apk`
+
+### Notas Importantes
+
+- **APK de Debug**: No requiere firma, perfecto para pruebas. Puede instalarse directamente en dispositivos Android.
+- **Instalación**: Para instalar el APK, habilita "Orígenes desconocidos" en la configuración de seguridad de tu dispositivo Android.
+- **Ubicación del APK**: Después de compilar, busca el archivo `app-debug.apk` en la ruta mencionada arriba.
+
 ## Problemas Enfrentados y Soluciones
 
 ### Problema 1: Versión de Node.js incompatible
@@ -232,6 +290,11 @@ npm run lint             # Verificar código
 npx cap sync android     # Sincronizar cambios con Android
 npx cap copy android     # Copiar solo archivos web
 npx cap open android     # Abrir en Android Studio
+
+# Compilar APK (sin firma)
+npm run build:android    # Compilar y sincronizar (todo en uno)
+cd android               # Ir a carpeta Android
+.\gradlew assembleDebug  # Generar APK de debug (sin firma)
 ```
 
 ## Notas Importantes
