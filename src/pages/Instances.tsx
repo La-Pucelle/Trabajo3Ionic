@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonMenuButton, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar } from '@ionic/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getVotingInstances } from '../utils/routes';
@@ -28,23 +28,32 @@ const Instances: React.FC = () => {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('reciente');
 
+  const loadInstances = async () => {
+    try {
+      const data = await getVotingInstances();
+      setItems(Array.isArray(data) ? data : []);
+    } catch (e: any) {
+      const msg = e?.message || 'No se pudieron cargar las instancias';
+      setToast({ message: msg, colorClass: 'alert-error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     let mounted = true;
     (async () => {
-      try {
-        const data = await getVotingInstances();
-        if (!mounted) return;
-        setItems(Array.isArray(data) ? data : []);
-      } catch (e: any) {
-        if (!mounted) return;
-        const msg = e?.message || 'No se pudieron cargar las instancias';
-        setToast({ message: msg, colorClass: 'alert-error' });
-      } finally {
-        if (mounted) setLoading(false);
-      }
+      await loadInstances();
+      if (!mounted) return;
     })();
     return () => { mounted = false; };
   }, []);
+
+  const handleRefresh = async (e: CustomEvent) => {
+    setLoading(true);
+    await loadInstances();
+    (e.target as HTMLIonRefresherElement).complete();
+  };
 
   const cards = useMemo(() => items.map(inst => {
     const status = computeStatus(inst.startDate, inst.endDate);
@@ -88,6 +97,10 @@ const Instances: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
+        {/* IonRefresher - Componente nuevo de Ionic para pull-to-refresh */}
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <div className="space-y-4">
           <div className="card bg-base-100 shadow-md">
             <div className="card-body">

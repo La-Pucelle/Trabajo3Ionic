@@ -6,6 +6,22 @@ Aplicación móvil desarrollada con Ionic React para gestión de votaciones y en
 
 Este proyecto es una aplicación móvil desarrollada como trabajo académico. La aplicación permite gestionar instancias de votación y encuestas, con funcionalidades para crear, editar y visualizar resultados. La aplicación funciona completamente con datos mock (simulados) y no requiere conexión a un servidor backend.
 
+## Enfoque de Desarrollo
+
+El desarrollo de esta aplicación se realizó siguiendo una arquitectura basada en componentes React con Ionic React. Se priorizó:
+
+1. **Componentes Reutilizables**: Se crearon componentes comunes como `Toast`, `HomeSummary`, `Menu`, y `ProtectedRoute` para mantener el código DRY (Don't Repeat Yourself).
+
+2. **Datos Mock**: Para facilitar el desarrollo y las pruebas, toda la lógica de datos se implementó con funciones mock que simulan llamadas a una API real, almacenadas en `src/utils/mockData.ts`.
+
+3. **Componentes de Ionic**: Se utilizaron componentes nativos de Ionic para aprovechar las mejores prácticas de diseño móvil:
+   - **IonModal**: Implementado en la página de Usuarios para mostrar detalles del usuario seleccionado en un modal interactivo
+   - **IonRefresher**: Añadido en las páginas de Instancias y Encuestas para permitir actualizar los datos mediante el gesto de pull-to-refresh, mejorando la experiencia de usuario móvil
+
+4. **Integración de Estilos**: Se combinó TailwindCSS v4 con FlyonUI para crear una interfaz moderna y consistente, manteniendo compatibilidad con los componentes de Ionic.
+
+5. **Enrutamiento Protegido**: Se implementó un componente `ProtectedRoute` que verifica la autenticación del usuario antes de permitir el acceso a rutas protegidas.
+
 ## Tecnologías Utilizadas
 
 - **Ionic React**: Framework para desarrollo de aplicaciones móviles híbridas
@@ -135,6 +151,25 @@ npx cap add android
 - Importar estilos en `src/styles/global.css`
 - Configurar FlyonUI con tema light
 
+### Problema 6: Integración de componentes nuevos de Ionic
+
+**Contexto**: Al añadir los nuevos componentes `IonModal` e `IonRefresher`, fue necesario:
+
+**IonModal**:
+- Asegurar que el estado del modal se maneje correctamente con `isOpen` y `onDidDismiss`
+- Configurar el slot del botón de cierre correctamente en el `IonToolbar`
+- Gestionar el estado del usuario seleccionado para evitar errores cuando el modal se cierra
+
+**IonRefresher**:
+- Implementar la función `handleRefresh` que recibe un `CustomEvent`
+- Completar el refresher correctamente usando `complete()` en el elemento target
+- Extraer la lógica de carga de datos a funciones separadas para reutilización
+
+**Solución**: 
+- Refactorizar las funciones de carga de datos (`loadInstances`, `loadSurveys`) para que puedan ser llamadas tanto en `useEffect` como en el manejador de refresh
+- Usar TypeScript correctamente para tipar los eventos (`CustomEvent`, `HTMLIonRefresherElement`)
+- Añadir el slot `"fixed"` al `IonRefresher` para que funcione correctamente con el contenido scrolleable
+
 ## Estructura del Proyecto
 
 ```
@@ -154,12 +189,29 @@ Trabajo3Ionic/
 
 La aplicación utiliza datos simulados almacenados en `src/utils/mockData.ts`. Todas las funciones de API en `src/utils/routes.ts` devuelven estos datos mock en lugar de hacer llamadas reales a un servidor. Esto permite que la aplicación funcione completamente sin backend.
 
+## Componentes de Ionic Utilizados
+
+La aplicación utiliza varios componentes de Ionic React para crear una experiencia móvil nativa:
+
+### Componentes Básicos
+- `IonApp`: Contenedor principal de la aplicación
+- `IonPage`: Páginas individuales de la aplicación
+- `IonHeader`, `IonToolbar`, `IonTitle`: Barra de navegación
+- `IonContent`: Área de contenido principal
+- `IonMenu`, `IonMenuToggle`: Menú lateral deslizable
+- `IonList`, `IonItem`, `IonLabel`, `IonIcon`: Listas y elementos de menú
+
+### Componentes Nuevos Añadidos
+1. **IonModal**: Implementado en la página de Usuarios para mostrar detalles completos del usuario seleccionado. Permite ver información detallada sin navegar a otra página, mejorando la usabilidad.
+
+2. **IonRefresher**: Añadido en las páginas de Instancias de Votación y Encuestas. Permite actualizar los datos deslizando hacia abajo (pull-to-refresh), una interacción estándar en aplicaciones móviles modernas.
+
 ## Funcionalidades Principales
 
 - **Autenticación**: Login simulado (acepta cualquier email/password)
-- **Gestión de Usuarios**: Ver y gestionar usuarios
-- **Instancias de Votación**: Crear, editar y ver instancias de votación
-- **Encuestas**: Crear, editar y ver encuestas
+- **Gestión de Usuarios**: Ver y gestionar usuarios con modal de detalles
+- **Instancias de Votación**: Crear, editar y ver instancias de votación con actualización pull-to-refresh
+- **Encuestas**: Crear, editar y ver encuestas con actualización pull-to-refresh
 - **Balance**: Visualizar créditos de encuestas y votaciones
 - **Resultados**: Ver resultados de instancias y encuestas finalizadas
 
