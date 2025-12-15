@@ -45,7 +45,12 @@ export const mockVotingInstances = [
     description: 'Votación para elegir al representante estudiantil del año 2024',
     startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-    resultsPublished: false
+    resultsPublished: false,
+    candidates: [
+      { id: '1', name: 'María González', description: 'Candidata por la Facultad de Ingeniería' },
+      { id: '2', name: 'Juan Pérez', description: 'Candidato por la Facultad de Ciencias' },
+      { id: '3', name: 'Ana Martínez', description: 'Candidata independiente' }
+    ]
   },
   {
     id: '2',
@@ -53,7 +58,12 @@ export const mockVotingInstances = [
     description: 'Aprobación del presupuesto anual del centro de estudiantes',
     startDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
     endDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    resultsPublished: true
+    resultsPublished: true,
+    candidates: [
+      { id: '1', name: 'Aprobar', description: 'Aprobar el presupuesto propuesto' },
+      { id: '2', name: 'Rechazar', description: 'Rechazar el presupuesto propuesto' },
+      { id: '3', name: 'Modificar', description: 'Solicitar modificaciones al presupuesto' }
+    ]
   },
   {
     id: '3',
@@ -61,7 +71,11 @@ export const mockVotingInstances = [
     description: 'Votación para elegir los miembros del comité directivo',
     startDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
     endDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
-    resultsPublished: false
+    resultsPublished: false,
+    candidates: [
+      { id: '1', name: 'Lista A - Unidos', description: 'Propuesta de lista completa' },
+      { id: '2', name: 'Lista B - Progreso', description: 'Propuesta alternativa' }
+    ]
   }
 ];
 
@@ -96,7 +110,10 @@ export const mockInstanceResults = {
   votingInstance: {
     id: '2',
     name: 'Votación de Presupuesto',
-    resultsPublished: true
+    description: 'Aprobación del presupuesto anual del centro de estudiantes',
+    resultsPublished: true,
+    startDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+    endDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
   },
   stats: {
     totalTokens: 100,
@@ -105,9 +122,27 @@ export const mockInstanceResults = {
     participationRate: 0.75
   },
   candidates: [
-    { id: '1', name: 'Opción A', votes: 35 },
-    { id: '2', name: 'Opción B', votes: 25 },
-    { id: '3', name: 'Opción C', votes: 10 }
+    { 
+      id: '1', 
+      name: 'Aprobar', 
+      description: 'Aprobar el presupuesto propuesto',
+      votes: 42,
+      percentage: 60.0
+    },
+    { 
+      id: '2', 
+      name: 'Rechazar', 
+      description: 'Rechazar el presupuesto propuesto',
+      votes: 18,
+      percentage: 25.7
+    },
+    { 
+      id: '3', 
+      name: 'Modificar', 
+      description: 'Solicitar modificaciones al presupuesto',
+      votes: 10,
+      percentage: 14.3
+    }
   ]
 };
 
@@ -115,7 +150,10 @@ export const mockSurveyResults = {
   surveyInstance: {
     id: '2',
     name: 'Encuesta de Actividades',
-    resultsPublished: true
+    description: 'Encuesta sobre las actividades realizadas durante el semestre',
+    resultsPublished: true,
+    startDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+    endDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
   },
   stats: {
     totalTokens: 80,
@@ -125,13 +163,26 @@ export const mockSurveyResults = {
   questions: [
     {
       id: '1',
-      text: '¿Cómo calificarías las actividades?',
+      text: '¿Cómo calificarías las actividades realizadas?',
       type: 'multiple_choice',
+      totalResponses: 60,
       responses: [
-        { option: 'Excelente', count: 20 },
-        { option: 'Buena', count: 25 },
-        { option: 'Regular', count: 10 },
-        { option: 'Mala', count: 5 }
+        { option: 'Excelente', count: 20, percentage: 33.3 },
+        { option: 'Buena', count: 25, percentage: 41.7 },
+        { option: 'Regular', count: 10, percentage: 16.7 },
+        { option: 'Mala', count: 5, percentage: 8.3 }
+      ]
+    },
+    {
+      id: '2',
+      text: '¿Qué tipo de actividades te gustaría ver más?',
+      type: 'multiple_choice',
+      totalResponses: 58,
+      responses: [
+        { option: 'Deportivas', count: 18, percentage: 31.0 },
+        { option: 'Culturales', count: 22, percentage: 37.9 },
+        { option: 'Académicas', count: 12, percentage: 20.7 },
+        { option: 'Sociales', count: 6, percentage: 10.3 }
       ]
     }
   ]
