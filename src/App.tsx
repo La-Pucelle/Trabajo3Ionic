@@ -9,6 +9,7 @@ import Instances from './pages/Instances';
 import Instance from './pages/Instance';
 import Surveys from './pages/Surveys';
 import Survey from './pages/Survey';
+import Api from './pages/Api';
 import ProtectedRoute from './components/ProtectedRoute';
 import Menu from './components/Menu';
 
@@ -73,6 +74,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/survey/:id">
             <Survey />
+          </Route>
+          <Route exact path="/api">
+            <Api />
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />

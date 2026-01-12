@@ -1,6 +1,6 @@
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { home, people, wallet, logOut, clipboard, document } from 'ionicons/icons';
+import { home, people, wallet, logOut, clipboard, document, book } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { getBalance } from '../utils/routes';
 import { clearAuth, getUserFromCookies } from '../utils/cookies';
@@ -36,6 +36,7 @@ const Menu: React.FC = () => {
     { title: 'Encuestas', url: '/surveys', icon: document },
     { title: 'Usuarios', url: '/users', icon: people },
     { title: 'Balance', url: '/balance', icon: wallet },
+    { title: 'API', url: '/api', icon: book },
   ];
 
   const getInitials = () => {
